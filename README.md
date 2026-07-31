@@ -2,7 +2,7 @@
 
 Two opinionated agent skills for designing and shipping high-craft web interfaces.
 
-They combine product thinking, visual systems, interaction design, frontend engineering, accessibility, performance, and real browser verification into a compact workflow an agent can follow from brief to release.
+They combine product thinking, visual systems, interaction design, frontend engineering, accessibility, performance, and real browser verification into a focused workflow an agent can follow from brief to release.
 
 ## Skills
 
@@ -20,13 +20,18 @@ Use either one independently or load both for end-to-end design engineering.
 
 ## Install
 
+Prerequisites:
+
+- Node.js and npm for the `npx` installer.
+- Python 3.9+ only when contributing or running repository validation.
+
 Install the complete repository:
 
 ```bash
 npx skills@latest add devsagent/design-engineering-skills
 ```
 
-The repository follows the common `skills/<name>/SKILL.md` layout and can also be copied into any agent environment that supports skill files.
+The repository follows the common `skills/<name>/SKILL.md` layout. To install manually, copy the complete `skills/web-design/` and/or `skills/frontend-development/` directory into your agent's documented skills directory. Keep each `SKILL.md` at the root of its named skill directory.
 
 ## What makes this system different
 
@@ -76,6 +81,8 @@ Separate functional, accessibility, responsive, performance, and craft findings.
 ├── LICENSE
 ├── scripts/
 │   └── validate_skills.py
+├── tests/
+│   └── test_validate_skills.py
 └── skills/
     ├── frontend-development/
     │   └── SKILL.md
@@ -85,13 +92,14 @@ Separate functional, accessibility, responsive, performance, and craft findings.
 
 ## Validation
 
-Run the dependency-free validator:
+Run the dependency-free validator and its regression tests:
 
 ```bash
 python3 scripts/validate_skills.py
+python3 -m unittest discover -s tests -v
 ```
 
-It checks directory names, required frontmatter, description length, file size, non-empty bodies, and related-skill references.
+The validator checks directory names, required frontmatter, description length, file size, non-empty bodies, metadata nesting, and related-skill references. To stay dependency-free, repository manifests use a strict YAML subset: top-level scalar fields, a two-space-indented `metadata` mapping, and inline string lists for `tags` and `related_skills`. The validator rejects duplicate keys, malformed lists, unknown fields, invalid quoting, and unsupported nesting.
 
 ## Contributing
 
