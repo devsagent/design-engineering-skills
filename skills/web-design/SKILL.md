@@ -1,11 +1,11 @@
 ---
 name: web-design
-description: "Use when designing, redesigning, critiquing, or polishing a web interface. Establishes a brief-led visual direction, coherent design system, responsive behavior, complete interaction states, accessible motion, and evidence-based craft review without defaulting to generic templates."
-version: 1.0.0
+description: "Use when designing, redesigning, critiquing, or polishing a web interface. Establishes brief-led visual direction, product-specific taste, anti-slop checks, a coherent design system, responsive behavior, complete interaction states, accessible motion, and evidence-based craft review."
+version: 1.1.0
 author: devsagent
 license: MIT
 metadata:
-  tags: [web-design, ui, ux, design-systems, responsive-design, accessibility, motion]
+  tags: [web-design, ui, ux, design-systems, taste, anti-slop, responsive-design, accessibility, motion]
   related_skills: [frontend-development]
 ---
 
@@ -16,6 +16,8 @@ metadata:
 Design interfaces that feel intentional, specific, coherent, and usable. Start from the product and audience rather than a default aesthetic. Build a small visual language, apply it consistently, and verify the interface across content, states, input methods, themes, and viewport sizes.
 
 The goal is not maximal novelty. The goal is an interface whose hierarchy is immediately legible, whose personality fits its purpose, and whose details quietly reinforce trust.
+
+When distinctiveness, premium craft, or generic-looking output is central to the request, read and apply [`references/taste-and-anti-slop.md`](references/taste-and-anti-slop.md). It defines the specificity brief, anti-default workflow, slop taxonomy, pattern budgets, adversarial taste tests, and final preflight.
 
 ## When to Use
 
@@ -34,12 +36,13 @@ Do not use it alone for backend implementation, infrastructure, or a purely func
 1. **Brief before aesthetic.** Product purpose, audience, task, content, and constraints choose the design direction.
 2. **Hierarchy before decoration.** Users should know what matters before they notice styling.
 3. **System before component.** Shared decisions for type, spacing, color, shape, and motion prevent local improvisation.
-4. **Specific before fashionable.** References inform the work; they do not replace a product-specific idea.
+4. **Specific before fashionable.** References inform the work; they do not replace product truth, a recognition anchor, or a product-specific idea.
 5. **States before screenshots.** An interface is a state machine, not one ideal frame.
 6. **Responsive by composition.** Mobile is a designed arrangement, not a squeezed desktop.
 7. **Motion by causality.** Animate to explain, connect, acknowledge, or preserve context—not to decorate routine actions.
 8. **Accessibility by construction.** Contrast, semantics, focus, input equivalence, and reduced motion are design constraints.
-9. **Evidence before completion.** Inspect the rendered interface. A code diff or build result cannot prove visual quality.
+9. **Subtraction before garnish.** Remove unsupported labels, cards, effects, and claims before adding polish.
+10. **Evidence before completion.** Inspect the rendered interface. A code diff or build result cannot prove visual quality.
 
 ## Workflow
 
@@ -57,7 +60,20 @@ Before proposing a layout or visual style, state:
 
 If the brief is thin, make the smallest reversible assumptions and label them. Do not hide ambiguity behind a polished generic mockup.
 
-### 2. Choose three design dials
+### 2. Set the specificity brief when taste matters
+
+For marketing, editorial, portfolio, premium, brand-led, or explicitly anti-slop work, define:
+
+- **Product truth:** the real capability, behavior, object, or belief the design can demonstrate.
+- **Emotional target:** what the audience should feel and why.
+- **Recognition anchor:** one ownable visual, verbal, or interactive idea rooted in the product.
+- **Evidence:** real screenshots, data, diagrams, photography, customer proof, or working interaction.
+- **Avoid list:** three habitual category defaults that would make the result interchangeable.
+- **Novelty budget:** one primary signature move and, at most, one supporting move.
+
+Name the most obvious template completion before designing. Keep familiar conventions that aid comprehension, reject unsupported defaults, and spend novelty only where it reinforces identity. Use the full workflow and tests in [`references/taste-and-anti-slop.md`](references/taste-and-anti-slop.md).
+
+### 3. Choose three design dials
 
 Set these explicitly for the surface:
 
@@ -67,7 +83,7 @@ Set these explicitly for the surface:
 
 The dials are contextual, not quality scores. A dense admin tool can be excellent; a sparse campaign can be excellent. Mismatch is the failure.
 
-### 3. Lock the system
+### 4. Lock the system
 
 Choose once, then document exceptions:
 
@@ -82,7 +98,7 @@ Choose once, then document exceptions:
 
 A surface should not feel like several templates stitched together.
 
-### 4. Design the composition
+### 5. Design the composition
 
 Establish the reading and action order before detailed components:
 
@@ -94,7 +110,7 @@ Establish the reading and action order before detailed components:
 
 Use asymmetry only when it improves emphasis or rhythm. Use repetition only when it improves comparison or scanning. Vary section composition intentionally; avoid repeating the same card row throughout a page.
 
-### 5. Define the state matrix
+### 6. Define the state matrix
 
 For every interactive or data-backed surface, design applicable states:
 
@@ -115,7 +131,7 @@ For every interactive or data-backed surface, design applicable states:
 
 Keep control dimensions stable across state changes. Do not signal selection by changing font weight, padding, or border width if it causes layout movement.
 
-### 6. Specify responsive behavior
+### 7. Specify responsive behavior
 
 For each multi-column, overlapping, sticky, or wide composition, define:
 
@@ -128,7 +144,7 @@ For each multi-column, overlapping, sticky, or wide composition, define:
 
 Check narrow mobile, wide mobile, tablet, both sides of each breakpoint, normal desktop, and a wide viewport. Content and geometry—not device labels—should determine breakpoints.
 
-### 7. Build the smallest representative slice
+### 8. Build the smallest representative slice
 
 Before expanding the entire surface, complete one slice containing:
 
@@ -141,7 +157,7 @@ Before expanding the entire surface, complete one slice containing:
 
 Render it. If the direction does not hold up, adjust the system before multiplying weak decisions.
 
-### 8. Review and refine
+### 9. Review and refine
 
 Audit the actual result in this order:
 
@@ -317,23 +333,20 @@ Use these as starting ranges, then verify in context:
 - Match transform origin and motion to the source of the interaction.
 - Ensure background dimming, blur, and depth describe one coherent layer.
 
-## Anti-Template Audit
+## Taste and Anti-Slop Review
 
-Treat these as warning signs, not automatic bans:
+Use the complete reference in [`references/taste-and-anti-slop.md`](references/taste-and-anti-slop.md) when taste is part of the acceptance criteria. At minimum, check:
 
-- A hero overloaded with badges, statistics, trust logos, two buttons, and decorative microcopy.
-- A page built mostly from repeated three-card rows or alternating text/image bands.
-- Gradient blobs, glass panels, and abstract meshes with no product-specific purpose.
-- Every item placed in a bordered rounded card.
-- Small uppercase mono labels above every heading.
-- Fake dashboards, terminal windows, charts, or browser chrome used as decoration.
-- Multiple accent colors with no semantic role.
-- Generic illustrations that could be swapped between unrelated products.
-- Motion on every scroll event or hover target.
-- Copy built from claims such as “revolutionary,” “seamless,” or “next generation.”
-- Perfect desktop screenshots with no loading, error, focus, keyboard, or mobile behavior.
+- **Swap test:** could a different product replace the logo and use the page unchanged?
+- **Recognition test:** is there one memorable idea rooted in product truth rather than a trend?
+- **Repetition test:** do repeated cards, split sections, eyebrows, materials, and motion reveal template inertia?
+- **Truth test:** can every screenshot, metric, quote, logo, chart, and claim be sourced or clearly labeled as mock content?
+- **Subtraction test:** does removing decorative furniture strengthen the hierarchy?
+- **Read-aloud test:** is visible copy concrete, consistent, and free of vague startup language or performative microcopy?
+- **Edge-state test:** does the design survive real content, loading, errors, keyboard use, touch, narrow screens, and reduced motion?
+- **Memory test:** can someone recall more than “dark,” “minimal,” “gradient,” “bento,” or “smooth” after looking away?
 
-For each warning sign, ask: does this improve comprehension, identity, trust, or task completion? If not, remove or replace it.
+Treat recognizable patterns as warnings with contextual overrides. Fabricated evidence, inaccessible interaction, broken responsive composition, severe audience/brand mismatch, and missing critical states are hard failures.
 
 ## Redesign Safety
 
@@ -369,6 +382,7 @@ Preference alone is not a blocker. Explain why the rule applies to this product 
 ### Direction
 
 - [ ] The design read identifies surface, audience, task, content, constraints, and direction.
+- [ ] Product truth, evidence, recognition anchor, avoid list, and novelty budget are explicit when taste is central.
 - [ ] The design dials match the product rather than a default aesthetic.
 - [ ] System locks are explicit and exceptions are intentional.
 - [ ] The interface has one clear visual and action hierarchy.
@@ -402,4 +416,5 @@ Preference alone is not a blocker. Explain why the rule applies to this product 
 - [ ] The real interface was inspected at representative mobile, tablet, and desktop widths.
 - [ ] Loading, empty, error, and success states were exercised where applicable.
 - [ ] Browser console and interaction paths were checked.
+- [ ] Applicable taste tests and the anti-slop preflight pass against the final rendered interface.
 - [ ] Remaining limitations are stated precisely.

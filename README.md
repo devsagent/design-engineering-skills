@@ -8,7 +8,7 @@ They combine product thinking, visual systems, interaction design, frontend engi
 
 | Skill | Use it for |
 | --- | --- |
-| [`web-design`](skills/web-design/SKILL.md) | Choosing a visual direction, building a coherent design system, avoiding generic output, designing responsive layouts and states, and reviewing interface craft. |
+| [`web-design`](skills/web-design/SKILL.md) | Choosing a visual direction, applying product-specific taste, rejecting generic AI/template defaults, building a coherent design system, designing responsive states, and reviewing interface craft. |
 | [`frontend-development`](skills/frontend-development/SKILL.md) | Implementing or improving frontend code safely, preserving the existing stack, testing behavior, controlling performance, and verifying the finished interface in a real browser. |
 
 The skills are complementary:
@@ -38,6 +38,7 @@ The repository follows the common `skills/<name>/SKILL.md` layout. To install ma
 - **Brief before aesthetic.** The product, audience, task, and constraints determine the direction.
 - **Systems before decoration.** Typography, spacing, color, shape, and motion are locked into a coherent language.
 - **Specific over generic.** No automatic bento grids, gradient blobs, fake dashboards, or startup-copy filler.
+- **Taste is a process.** Product truth, a recognition anchor, pattern budgets, subtraction, and adversarial tests prevent polished-but-interchangeable output.
 - **States are part of the design.** Loading, empty, error, focus, hover, active, disabled, and success states are first-class work.
 - **Motion must earn its place.** It clarifies hierarchy, feedback, continuity, or causality—or it is removed.
 - **Accessibility is structural.** Semantic HTML, keyboard paths, focus behavior, contrast, reduced motion, and touch targets are designed in.
@@ -50,6 +51,13 @@ The repository follows the common `skills/<name>/SKILL.md` layout. To install ma
 ```text
 Use the web-design skill to define and design a focused landing page for this product.
 Start with a design read, choose the system locks, and explain the mobile collapse before implementation.
+```
+
+### Prevent a generic result
+
+```text
+Use the web-design skill and its taste-and-anti-slop reference.
+Name the obvious template completion, define the product truth and recognition anchor, reject unsupported defaults, and run the swap, subtraction, truth, edge-state, and memory tests before shipping.
 ```
 
 ### Build the design
@@ -87,7 +95,9 @@ Separate functional, accessibility, responsive, performance, and craft findings.
     ├── frontend-development/
     │   └── SKILL.md
     └── web-design/
-        └── SKILL.md
+        ├── SKILL.md
+        └── references/
+            └── taste-and-anti-slop.md
 ```
 
 ## Validation
