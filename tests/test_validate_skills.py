@@ -51,16 +51,28 @@ class ValidatorTests(unittest.TestCase):
                 check=False,
             )
 
-    def assert_rejected(self, manifest: str) -> None:
+    def assert_rejected(self, manifest: str, diagnostic: str | None = None) -> None:
         result = self.run_validator(manifest)
         self.assertNotEqual(
             result.returncode,
             0,
             msg=f"validator accepted malformed manifest:\n{manifest}\n{result.stdout}",
         )
+        self.assertTrue(
+            result.stdout.startswith("ERROR: "),
+            msg=f"validator crashed instead of reporting an error:\n{result.stderr}",
+        )
+        if diagnostic is not None:
+            self.assertIn(diagnostic, result.stdout)
 
     def test_accepts_valid_manifest(self) -> None:
         result = self.run_validator(VALID_MANIFEST)
+        self.assertEqual(result.returncode, 0, msg=result.stdout + result.stderr)
+
+    def test_accepts_unicode_letters_and_quoted_punctuation(self) -> None:
+        result = self.run_validator(
+            VALID_MANIFEST.replace("author: example", 'author: "Équipe, Inc."')
+        )
         self.assertEqual(result.returncode, 0, msg=result.stdout + result.stderr)
 
     def test_rejects_malformed_inline_list(self) -> None:
@@ -101,6 +113,76 @@ class ValidatorTests(unittest.TestCase):
             "  related_skills: []",
             "  related_skills: []\n  unexpected: [value]",
         ))
+
+    def test_rejects_unicode_whitespace_as_indentation(self) -> None:
+        self.assert_rejected(
+            VALID_MANIFEST.replace("name: example-skill", "\u00a0name: example-skill"),
+            "unsupported whitespace",
+        )
+
+    def test_rejects_unicode_whitespace_as_separator(self) -> None:
+        self.assert_rejected(
+            VALID_MANIFEST.replace("name: example-skill", "name:\u00a0example-skill"),
+            "unsupported whitespace",
+        )
+        self.assert_rejected(
+            VALID_MANIFEST.replace(
+                "tags: [example, validation]", "tags: [example,\u00a0validation]"
+            ),
+            "unsupported whitespace",
+        )
+
+    def test_rejects_literal_control_characters(self) -> None:
+        self.assert_rejected(
+            VALID_MANIFEST.replace(
+                'description: "Use when validating an example skill."',
+                "description: 'Use when validating\x00 an example skill.'",
+            ),
+            "control character",
+        )
+
+    def test_rejects_empty_quoted_tags(self) -> None:
+        self.assert_rejected(
+            VALID_MANIFEST.replace(
+                "tags: [example, validation]", 'tags: [""]'
+            ),
+            "value is empty",
+        )
+
+    def test_rejects_duplicate_tag_values(self) -> None:
+        self.assert_rejected(
+            VALID_MANIFEST.replace(
+                "tags: [example, validation]", "tags: [example, example]"
+            ),
+            "duplicate values",
+        )
+
+    def test_rejects_escaped_control_characters(self) -> None:
+        self.assert_rejected(
+            VALID_MANIFEST.replace(
+                'description: "Use when validating an example skill."',
+                'description: "Use when validating\\u0000 an example skill."',
+            ),
+            "control character",
+        )
+
+    def test_rejects_escaped_del_and_c1_controls(self) -> None:
+        for escaped in (r"\u007f", r"\u0085"):
+            with self.subTest(escaped=escaped):
+                self.assert_rejected(
+                    VALID_MANIFEST.replace(
+                        "validating an example", f"validating{escaped} an example"
+                    ),
+                    "control character",
+                )
+
+    def test_rejects_invalid_tag_spelling(self) -> None:
+        self.assert_rejected(
+            VALID_MANIFEST.replace(
+                "tags: [example, validation]", 'tags: ["invalid tag"]'
+            ),
+            "invalid tag",
+        )
 
 
 if __name__ == "__main__":

@@ -29,8 +29,22 @@ def fail(message: str) -> None:
     raise ValidationError(message)
 
 
+def validate_scalar_characters(value: str, context: str) -> None:
+    """Reject decoded characters that are not part of the scalar subset."""
+
+    for character in value:
+        codepoint = ord(character)
+        if codepoint < 0x20 or 0x7F <= codepoint <= 0x9F:
+            fail(f"{context}: control character U+{codepoint:04X} is not allowed")
+        if character.isspace() and character != " ":
+            fail(
+                f"{context}: unsupported whitespace U+{codepoint:04X}; "
+                "use ASCII spaces"
+            )
+
+
 def parse_scalar(raw: str, context: str) -> str:
-    value = raw.strip()
+    value = raw.strip(" ")
     if not value:
         fail(f"{context}: value is empty")
 
@@ -41,6 +55,9 @@ def parse_scalar(raw: str, context: str) -> str:
             fail(f"{context}: invalid double-quoted string: {exc.msg}")
         if not isinstance(parsed, str):
             fail(f"{context}: value must be a string")
+        validate_scalar_characters(parsed, context)
+        if not parsed.strip(" "):
+            fail(f"{context}: value is empty")
         return parsed
 
     if value.startswith("'"):
@@ -49,7 +66,11 @@ def parse_scalar(raw: str, context: str) -> str:
         inner = value[1:-1]
         if "'" in inner.replace("''", ""):
             fail(f"{context}: single quotes inside a quoted string must be doubled")
-        return inner.replace("''", "'")
+        parsed = inner.replace("''", "'")
+        validate_scalar_characters(parsed, context)
+        if not parsed.strip(" "):
+            fail(f"{context}: value is empty")
+        return parsed
 
     if value[:1] in "[{" or value[-1:] in "]}":
         fail(f"{context}: expected a scalar string")
@@ -61,12 +82,12 @@ def parse_scalar(raw: str, context: str) -> str:
 
 
 def split_inline_list(raw: str, context: str) -> list[str]:
-    value = raw.strip()
+    value = raw.strip(" ")
     if not value.startswith("[") or not value.endswith("]"):
         fail(f"{context}: expected an inline list such as [one, two]")
 
     inner = value[1:-1]
-    if not inner.strip():
+    if not inner.strip(" "):
         return []
 
     parts: list[str] = []
@@ -104,7 +125,7 @@ def split_inline_list(raw: str, context: str) -> list[str]:
             quote = char
             current.append(char)
         elif char == ",":
-            part = "".join(current).strip()
+            part = "".join(current).strip(" ")
             if not part:
                 fail(f"{context}: list contains an empty item")
             parts.append(part)
@@ -118,7 +139,7 @@ def split_inline_list(raw: str, context: str) -> list[str]:
     if quote is not None or escaped:
         fail(f"{context}: unterminated quoted list item")
 
-    final = "".join(current).strip()
+    final = "".join(current).strip(" ")
     if not final:
         fail(f"{context}: trailing commas and empty items are not allowed")
     parts.append(final)
@@ -126,23 +147,42 @@ def split_inline_list(raw: str, context: str) -> list[str]:
     return [parse_scalar(part, f"{context} item") for part in parts]
 
 
+def validate_frontmatter_characters(frontmatter: str, relative: Path) -> None:
+    """Reject characters that can change token boundaries in the strict subset."""
+
+    for line_number, raw_line in enumerate(frontmatter.split("\n"), start=2):
+        for character in raw_line:
+            codepoint = ord(character)
+            if character == "\t":
+                fail(f"{relative}:{line_number}: tabs are not allowed in frontmatter")
+            if codepoint < 0x20 or 0x7F <= codepoint <= 0x9F:
+                fail(
+                    f"{relative}:{line_number}: control character "
+                    f"U+{codepoint:04X} is not allowed in frontmatter"
+                )
+            if character.isspace() and character != " ":
+                fail(
+                    f"{relative}:{line_number}: unsupported whitespace "
+                    f"U+{codepoint:04X}; use ASCII spaces"
+                )
+
+
 def parse_frontmatter(frontmatter: str, relative: Path) -> dict[str, Any]:
     """Parse the deliberately small YAML subset supported by this repository."""
 
+    validate_frontmatter_characters(frontmatter, relative)
     result: dict[str, Any] = {}
     in_metadata = False
 
-    for line_number, raw_line in enumerate(frontmatter.splitlines(), start=2):
-        if not raw_line.strip():
+    for line_number, raw_line in enumerate(frontmatter.split("\n"), start=2):
+        if not raw_line.strip(" "):
             continue
-        if "\t" in raw_line:
-            fail(f"{relative}:{line_number}: tabs are not allowed in frontmatter")
 
         indentation = len(raw_line) - len(raw_line.lstrip(" "))
         if indentation not in {0, 2}:
             fail(f"{relative}:{line_number}: use zero or two spaces of indentation")
 
-        stripped = raw_line.strip()
+        stripped = raw_line[indentation:].rstrip(" ")
         match = MAPPING_LINE_RE.fullmatch(stripped)
         if not match:
             fail(f"{relative}:{line_number}: expected a mapping entry")
@@ -233,6 +273,10 @@ def validate_skill(path: Path, known_names: set[str]) -> None:
         fail(f"{relative}: metadata.tags contains duplicate values")
     if len(related_skills) != len(set(related_skills)):
         fail(f"{relative}: metadata.related_skills contains duplicate values")
+
+    for tag in tags:
+        if not NAME_RE.fullmatch(tag):
+            fail(f"{relative}: invalid tag {tag!r}")
 
     for related in related_skills:
         if not NAME_RE.fullmatch(related):

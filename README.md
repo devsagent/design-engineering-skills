@@ -109,7 +109,7 @@ python3 scripts/validate_skills.py
 python3 -m unittest discover -s tests -v
 ```
 
-The validator checks directory names, required frontmatter, description length, file size, non-empty bodies, metadata nesting, and related-skill references. To stay dependency-free, repository manifests use a strict YAML subset: top-level scalar fields, a two-space-indented `metadata` mapping, and inline string lists for `tags` and `related_skills`. The validator rejects duplicate keys, malformed lists, unknown fields, invalid quoting, and unsupported nesting.
+The validator checks directory names, required frontmatter, description length, file size, non-empty bodies, metadata nesting, and related-skill references. To stay dependency-free, repository manifests use a strict YAML subset: top-level scalar fields, a two-space-indented `metadata` mapping, and inline string lists for `tags` and `related_skills`. Frontmatter uses ASCII spaces only; tabs, non-ASCII whitespace, control characters, duplicate keys or list values, malformed lists, unknown fields, invalid quoting, and unsupported nesting are rejected. Tags and related-skill names use lowercase kebab case.
 
 ## Contributing
 
