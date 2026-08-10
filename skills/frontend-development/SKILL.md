@@ -1,11 +1,11 @@
 ---
 name: frontend-development
 description: "Use when implementing, modifying, debugging, reviewing, or shipping a web frontend. Provides an evidence-first workflow for understanding the existing stack, preserving behavior, designing maintainable component and state boundaries, testing changes, controlling accessibility and performance, and verifying responsive behavior in a real browser."
-version: 1.0.0
+version: 1.1.0
 author: devsagent
 license: MIT
 metadata:
-  tags: [frontend, web-development, testing, accessibility, performance, responsive-design, code-review]
+  tags: [frontend, web-development, testing, accessibility, performance, responsive-design, routing, code-review]
   related_skills: [web-design]
 ---
 
@@ -177,6 +177,20 @@ Keep state at the lowest owner that needs to coordinate it:
 - durable preferences use an explicit persistence boundary
 
 Avoid mirrored state and synchronization effects when a value can be derived. Separate state by lifecycle: server data, optimistic changes, draft input, navigation, and ephemeral UI should not accidentally overwrite one another.
+
+### Route-backed master-detail state
+
+For collection → list → detail surfaces, use the route as the authority for shareable selection. Implement this contract without depending on another skill directory.
+
+- Define one pure `itemHasDetails(item)` rule for row affordance, route validation, static params, and detail rendering. A route must not return item-specific metadata unless the UI can render that item.
+- Centralize aggregate and canonical item resolution so server validation, client lookup, metadata, and generated routes cannot disagree.
+- Keep the selected row mounted while desktop detail is open and expose current location with stable semantics such as `aria-current="page"`.
+- On mobile, render rich detail as a complete route-level replacement with an explicit Back action and a safe collection fallback for direct loads.
+- Prefer the framework router. Use native `pushState()` or `replaceState()` inside a framework application only when its current documentation explicitly supports that integration or a documented state-extension mechanism.
+- Never replace, spread, copy, or reinsert opaque framework-owned `history.state`. If supported custom state is unavailable, keep navigation provenance outside framework-owned history state and use the collection fallback.
+- In router-neutral native History flows, put the app-owned parent marker on the current detail entry when that entry is pushed from a known collection. Call `history.back()` only when the current detail entry carries that marker; otherwise replace it with the safe fallback route.
+- On desktop, opening detail should usually keep focus on the selected row; closing an unmounted detail control restores focus to that row. On mobile, move focus to the new view heading and restore it to the selected row on return. Do not steal focus on initial render.
+- Regression-test direct collection/detail loads, unsupported routes, in-app open, explicit Back, browser Back/Forward, focus restoration, and a subsequent normal framework navigation.
 
 ### State machines for complex flows
 
@@ -422,6 +436,8 @@ Exercise real paths:
 - pointer/touch behavior
 - loading, empty, error, retry, success, and disabled states
 - URL/history behavior
+- direct route loads and unsupported-route behavior
+- selected-row persistence plus viewport-specific focus restoration
 - persistence across reload when required
 - reduced motion and all themes
 - long and missing content
@@ -531,6 +547,7 @@ Any source, configuration, dependency, or lockfile edit after a green check inva
 - [ ] State ownership and server/client boundaries are explicit.
 - [ ] Existing stack, tokens, and local patterns are preserved unless change was approved.
 - [ ] Loading, empty, error, pending, success, and edge states are implemented where applicable.
+- [ ] Route-backed master-detail behavior uses shared eligibility/resolution rules and verified direct-load, Back/Forward, and focus semantics where applicable.
 
 ### Quality
 

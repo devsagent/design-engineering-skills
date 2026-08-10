@@ -1,12 +1,12 @@
 ---
 name: web-design
-description: "Use when designing, redesigning, critiquing, or polishing a web interface. Establishes brief-led visual direction, product-specific taste, anti-slop checks, a coherent design system, responsive behavior, complete interaction states, accessible motion, and evidence-based craft review."
-version: 1.1.0
+description: "Use when designing, redesigning, critiquing, or polishing a web interface. Establishes brief-led visual direction, product-specific taste, anti-slop checks, coherent systems, route-backed master-detail content experiences, responsive behavior, complete interaction states, accessible motion, and evidence-based craft review."
+version: 1.2.0
 author: devsagent
 license: MIT
 metadata:
-  tags: [web-design, ui, ux, design-systems, taste, anti-slop, responsive-design, accessibility, motion]
-  related_skills: [frontend-development]
+  tags: [web-design, ui, ux, design-systems, taste, anti-slop, responsive-design, accessibility, motion, master-detail]
+  related_skills: [frontend-development, dotted-painterly-cover-art]
 ---
 
 # Web Design
@@ -18,6 +18,8 @@ Design interfaces that feel intentional, specific, coherent, and usable. Start f
 The goal is not maximal novelty. The goal is an interface whose hierarchy is immediately legible, whose personality fits its purpose, and whose details quietly reinforce trust.
 
 When distinctiveness, premium craft, or generic-looking output is central to the request, read and apply [`references/taste-and-anti-slop.md`](references/taste-and-anti-slop.md). It defines the specificity brief, anti-default workflow, slop taxonomy, pattern budgets, adversarial taste tests, and final preflight.
+
+For notes libraries, bookmark organizers, knowledge bases, catalogs, inboxes, and other collection → list → detail products, read [`references/master-detail-content-ux.md`](references/master-detail-content-ux.md). It defines aggregate discovery, minimal rows, typed rich details, desktop continuity, mobile route replacement, history/focus semantics, privacy boundaries, and the required QA matrix.
 
 ## When to Use
 
@@ -109,6 +111,8 @@ Establish the reading and action order before detailed components:
 5. What changes when the viewport narrows?
 
 Use asymmetry only when it improves emphasis or rhythm. Use repetition only when it improves comparison or scanning. Vary section composition intentionally; avoid repeating the same card row throughout a page.
+
+For a master-detail content surface, design the information sequence before the columns. Define collection navigation, list scanning, detail eligibility, route semantics, and mobile replacement behavior before drawing a three-pane desktop frame. Keep the selected row visible on wide screens and preserve the same data/URL model when the layout collapses.
 
 ### 6. Define the state matrix
 
@@ -233,6 +237,7 @@ For themed interfaces, audit every relevant combination of theme, accent variant
 - When generated imagery is used, establish a coherent art direction and inspect artifacts, legibility, crops, and responsive behavior.
 - Keep important text in deterministic HTML whenever accuracy and accessibility matter.
 - Define focal points and crops for mobile rather than blindly using `object-fit: cover`.
+- For editorial covers using painterly square-cell stippling or ASCII-like dithering, use the related `dotted-painterly-cover-art` skill when it is installed; it covers concept selection, prompt structure, strict exclusions, native-raster generation, crop review, and asset verification.
 
 ### Copy
 
@@ -309,6 +314,18 @@ Use these as starting ranges, then verify in context:
 - Preserve familiar browser behavior for genuine links.
 - Avoid hiding primary navigation behind novelty on large screens.
 - Mobile navigation must manage focus, Escape, scroll locking, and return focus correctly.
+
+### Master-detail content surfaces
+
+- Consider a broad first collection such as All items when users commonly browse before they know a category; define one aggregate item-resolution rule before adding it.
+- Keep rows deliberately minimal: type cue, title, at most one creator/descriptor, and one short note only when it helps retrieval.
+- Use one explicit detail-eligibility rule for row affordance, valid routes, generated params, and rendering.
+- On desktop, preserve collection navigation, the item list, and the selected row while a distinct detail panel opens.
+- On narrow screens, replace the list with a full-screen route-backed detail rather than squeezing in a third column or using a cramped drawer for primary content.
+- Make direct loads, explicit Back, browser Back/Forward, focus movement, and focus restoration part of the design contract.
+- Put rich media, progress, scores, structured sections, and long notes in detail rather than overloading every row.
+
+Use the full pattern and test matrix in [`references/master-detail-content-ux.md`](references/master-detail-content-ux.md).
 
 ### Forms
 
@@ -402,6 +419,8 @@ Preference alone is not a blocker. Explain why the rule applies to this product 
 - [ ] Touch targets are usable and hover is not required.
 - [ ] Motion has a purpose, remains interruptible where needed, and supports reduced motion.
 - [ ] Overlays, forms, navigation, and data views have complete behavior.
+- [ ] Route-backed selections support direct load, browser Back/Forward, and intentional focus movement/restoration.
+- [ ] Master-detail surfaces share one eligibility and resolution model across rows, routes, metadata, and rendered detail.
 
 ### Responsive QA
 
@@ -410,6 +429,7 @@ Preference alone is not a blocker. Explain why the rule applies to this product 
 - [ ] Long content, missing media, and localization do not break layout.
 - [ ] No unintended document-level horizontal overflow exists.
 - [ ] Sticky, fixed, overlapping, and wide elements remain usable.
+- [ ] Multi-pane content surfaces preserve orientation on desktop and become a complete, usable route-level sequence on mobile.
 
 ### Completion
 
