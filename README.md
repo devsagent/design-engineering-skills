@@ -1,6 +1,6 @@
 # Design Engineering Skills
 
-Three opinionated agent skills for designing interfaces, shipping frontend software, and art-directing distinctive editorial covers.
+Four opinionated agent skills for designing interfaces, shipping frontend software, explaining technical systems, and art-directing distinctive editorial covers.
 
 They combine product thinking, visual systems, interaction design, frontend engineering, accessibility, performance, image-generation discipline, and real browser verification into focused workflows an agent can follow from brief to release.
 
@@ -10,13 +10,15 @@ They combine product thinking, visual systems, interaction design, frontend engi
 | --- | --- |
 | [`web-design`](skills/web-design/SKILL.md) | Choosing a visual direction, applying product-specific taste, rejecting generic AI/template defaults, designing route-backed master-detail content experiences, building a coherent system, and reviewing responsive interface craft. |
 | [`frontend-development`](skills/frontend-development/SKILL.md) | Implementing or improving frontend code safely, preserving the existing stack, testing behavior, controlling performance, and verifying the finished interface in a real browser. |
+| [`react-diagram-creator`](skills/react-diagram-creator/SKILL.md) | Building or reviewing responsive React diagrams, concept explainers, flow explorers, linked glossaries, figure sheets, and animation sandboxes that make one technical relationship observable. |
 | [`dotted-painterly-cover-art`](skills/dotted-painterly-cover-art/SKILL.md) | Creating native-raster editorial covers with painterly massing and form-modeling square-cell stippling, including concept selection, prompts, exclusions, crop QA, replacement workflows, and publication verification. |
 
 The skills are complementary:
 
 1. `web-design` decides what the interface should communicate and how it should feel.
 2. `frontend-development` turns that direction into robust, accessible, verified software.
-3. `dotted-painterly-cover-art` directs and verifies a specialized generated-image system when editorial imagery needs that visual language.
+3. `react-diagram-creator` turns a technical claim into a measurable, responsive, accessible explanatory state model.
+4. `dotted-painterly-cover-art` directs and verifies a specialized generated-image system when editorial imagery needs that visual language.
 
 Use any skill independently or combine them for end-to-end design engineering.
 
@@ -33,7 +35,7 @@ Install the complete repository:
 npx skills@latest add devsagent/design-engineering-skills
 ```
 
-The repository follows the common `skills/<name>/SKILL.md` layout. To install manually, copy the complete directory for any desired skill into your agent's documented skills directory. Keep each `SKILL.md` at the root of its named skill directory and preserve linked `references/` files.
+The repository follows the common `skills/<name>/SKILL.md` layout. To install manually, copy the complete directory for any desired skill into your agent's documented skills directory. Keep each `SKILL.md` at the root of its named skill directory and preserve linked `references/` and `templates/` files.
 
 ## What makes this system different
 
@@ -44,6 +46,7 @@ The repository follows the common `skills/<name>/SKILL.md` layout. To install ma
 - **Information architecture before panes.** Collection, list, detail, route, and mobile semantics precede a three-column master-detail frame.
 - **States are part of the design.** Loading, empty, error, focus, hover, active, selected, disabled, and success states are first-class work.
 - **Motion must earn its place.** It clarifies hierarchy, feedback, continuity, or causality, or it is removed.
+- **Diagrams are causal models.** Geometry, counters, labels, motion, implication, and accessible descriptions derive from one state instead of drifting independently.
 - **Accessibility is structural.** Semantic HTML, keyboard paths, focus behavior, contrast, reduced motion, and touch targets are designed in.
 - **Generated images are artifacts, not prompts.** A real native raster, tested crops, strict exclusions, deterministic text policy, and production bytes are required.
 - **Verification is visible.** A passing build is necessary but never substitutes for responsive browser QA, interaction checks, or inspection of final pixels.
@@ -76,6 +79,13 @@ Name the obvious template completion, define the product truth and recognition a
 ```text
 Use the frontend-development skill to implement the approved design in the existing stack.
 Preserve current behavior, cover all UI states, and verify it at mobile, tablet, and desktop widths.
+```
+
+### Explain a technical system
+
+```text
+Use the react-diagram-creator skill to explain this system in React.
+Write the Question, Variable, Observable, and Implication first. Choose the smallest diagram pattern, derive geometry and readouts from one typed model, and verify keyboard use, reduced motion, forced colors, 320px reflow, and the failure states that matter.
 ```
 
 ### Create a dotted painterly cover
@@ -114,6 +124,19 @@ Separate functional, accessibility, responsive, performance, and craft findings.
     │   └── SKILL.md
     ├── frontend-development/
     │   └── SKILL.md
+    ├── react-diagram-creator/
+    │   ├── SKILL.md
+    │   ├── references/
+    │   │   ├── code-review-pitfalls.md
+    │   │   ├── research-notes.md
+    │   │   └── verification.md
+    │   └── templates/
+    │       ├── causal-flow-example.tsx
+    │       ├── css-modules.d.ts
+    │       ├── diagram-client.tsx
+    │       ├── diagram-contract.md
+    │       ├── diagram-primitives.tsx
+    │       └── diagram.module.css
     └── web-design/
         ├── SKILL.md
         └── references/

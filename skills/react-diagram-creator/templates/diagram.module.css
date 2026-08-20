@@ -1,0 +1,302 @@
+.section {
+  --diagram-field: color-mix(in oklab, CanvasText 4%, Canvas);
+  --diagram-surface: color-mix(in oklab, CanvasText 7%, Canvas);
+  --diagram-border: color-mix(in oklab, CanvasText 22%, transparent);
+  --diagram-border-strong: color-mix(in oklab, CanvasText 40%, transparent);
+  --diagram-ink: CanvasText;
+  --diagram-muted: color-mix(in oklab, CanvasText 72%, transparent);
+  --diagram-accent: #b86f42;
+  --diagram-success: #4f7e57;
+  --diagram-error: #a84f49;
+
+  container-type: inline-size;
+  padding: clamp(4rem, 8vw, 8rem) 0;
+}
+
+.header {
+  max-width: 46rem;
+  margin-bottom: 2rem;
+  scroll-margin-top: 5rem;
+}
+
+.header :is(h2, h3, h4, h5, h6) {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.header p {
+  margin: 1rem 0 0;
+  color: var(--diagram-muted);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.figure {
+  margin: 0;
+  border: 1px solid var(--diagram-border);
+  border-radius: 1rem;
+  background: var(--diagram-field);
+  color: var(--diagram-ink);
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem);
+}
+
+.main,
+.details {
+  min-width: 0;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.details {
+  border-left: 1px solid var(--diagram-border);
+  background: var(--diagram-surface);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  align-items: end;
+  padding: 1rem;
+  border-top: 1px solid var(--diagram-border);
+  background: var(--diagram-surface);
+}
+
+.caption {
+  display: flex;
+  min-height: 3.25rem;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--diagram-border);
+  color: var(--diagram-muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.statusDot {
+  width: 0.45rem;
+  height: 0.45rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--diagram-accent);
+}
+
+.controlGroup {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.controlLabel {
+  color: var(--diagram-muted);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.controlCluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.controlButton {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--diagram-border);
+  border-radius: 0.55rem;
+  background: var(--diagram-field);
+  color: var(--diagram-ink);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.controlButton:hover:not(:disabled),
+.controlButton[data-active="true"] {
+  border-color: var(--diagram-accent);
+}
+
+.controlButton[data-active="true"] {
+  background: color-mix(in oklab, var(--diagram-accent) 14%, var(--diagram-field));
+}
+
+.controlButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.section :is(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--diagram-accent);
+  outline-offset: 3px;
+}
+
+.diagramSvg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+}
+
+.svgLabel {
+  fill: var(--diagram-ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.svgMetric {
+  fill: var(--diagram-muted);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 10px;
+}
+
+.svgGuide {
+  fill: none;
+  stroke: var(--diagram-border-strong);
+  stroke-width: 1.5;
+}
+
+.svgGuide[data-active="true"] {
+  stroke: var(--diagram-accent);
+}
+
+.exampleFlow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.exampleNodeWrap {
+  position: relative;
+  min-width: 0;
+}
+
+.exampleNode {
+  display: grid;
+  width: 100%;
+  min-height: 5rem;
+  align-content: space-between;
+  padding: 0.8rem;
+  border: 1px solid var(--diagram-border);
+  border-radius: 0.65rem;
+  background: var(--diagram-surface);
+  color: var(--diagram-ink);
+  text-align: left;
+}
+
+.exampleNode span,
+.exampleReadout span {
+  color: var(--diagram-muted);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 0.7rem;
+}
+
+.exampleNode[data-active="true"] {
+  border-color: var(--diagram-accent);
+  box-shadow: inset 0 0 0 1px var(--diagram-accent);
+}
+
+.exampleNode[data-complete="true"] {
+  border-color: var(--diagram-success);
+}
+
+.exampleConnector {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 1rem;
+  height: 1px;
+  background: var(--diagram-border-strong);
+}
+
+.exampleConnector[data-complete="true"] {
+  background: var(--diagram-success);
+}
+
+.exampleReadout {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@container (max-width: 60rem) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+
+  .details {
+    border-top: 1px solid var(--diagram-border);
+    border-left: 0;
+  }
+}
+
+@container (max-width: 45rem) {
+  .controls {
+    align-items: stretch;
+  }
+
+  .controlGroup {
+    width: 100%;
+  }
+
+  .controlCluster {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .controlButton {
+    width: 100%;
+  }
+
+  .exampleFlow {
+    grid-template-columns: 1fr;
+  }
+
+  .exampleConnector {
+    top: 100%;
+    left: 50%;
+    width: 1px;
+    height: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motionTravel,
+  .motionLoop,
+  [data-motion="transfer"]::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .controlButton[data-active="true"],
+  .exampleNode[data-active="true"] {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .statusDot,
+  .exampleConnector[data-complete="true"] {
+    background: Highlight;
+  }
+}
