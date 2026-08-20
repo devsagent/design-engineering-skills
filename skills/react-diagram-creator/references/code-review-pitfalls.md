@@ -4,6 +4,8 @@ Use this during source reviews of React/SVG diagram systems. These checks catch 
 
 ## Geometry and motion
 
+- Treat a curved connector and its arrowhead as one geometric object. Prefer `marker-end` with `orient="auto"` over a separately positioned chevron. Verify the curve endpoint, the final tangent, the marker reference, and draw order. A marker can be mathematically attached but visually hidden under its destination node; stop the path just before the node or layer it deliberately.
+- For a curve that should enter a node at a precise side, align the final Bézier control point with the endpoint and target center. Measure the rendered tangent with `getPointAtLength(totalLength - 1)` and `getPointAtLength(totalLength)` rather than judging source coordinates alone.
 - CSS transform percentages are relative to the transformed element, not its parent. A token with `width: 0.84rem` and `translateX(calc(100% - 0.84rem))` moves approximately zero. Measure the token and track rectangles midway through animation.
 - For parent-relative travel, use a parent-width carrier, `offset-distance`, or a bounded `left` animation when the surface is small and profiling permits it.
 - Test Replay followed immediately by Reset. An uncancelled `requestAnimationFrame` can restart playback after reset.
@@ -42,6 +44,13 @@ For mobile range layouts, commonly needed safeguards are `min-width: 0`, `flex: 
 - Exercise success and failure terminal states and inspect every connector, muted node, detail label, and status together.
 - A branch outcome should not inherit a misleading main-path phase label such as “phase 5 of 5” when it replaces phase five.
 - Reset should restore the documented default. If branch persistence is intentional, name the action narrowly, such as “Reset position.”
+
+## Touch, hover, and selected state
+
+- Pressed feedback, hover, focus, and selected state are different. A tap should not show a dull hover color before the selected color appears.
+- Gate hover rules behind `@media (hover: hover) and (pointer: fine)`. Mobile Safari can preserve hover after a tap even when desktop emulation looks correct.
+- On coarse pointers, prefer immediate semantic border/background/text changes and a short transform-only press transition. Animating selected colors from neutral can make the state look delayed or require several taps to understand.
+- Set `touch-action: manipulation` on native diagram controls and make tap-highlight policy explicit. Verify computed `transition-property`, `aria-pressed`, and `data-active` under real or CDP-emulated coarse-pointer media.
 
 ## Landmarks and ARIA
 
