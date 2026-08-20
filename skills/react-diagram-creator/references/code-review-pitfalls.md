@@ -16,6 +16,7 @@ Use this during source reviews of React/SVG diagram systems. These checks catch 
 
 - SVG typography is measured in viewBox units, not guaranteed rendered CSS pixels. A `10`-unit label in a `360`-unit viewBox rendered at `252px` is only about `7px` tall. At 320px, measure essential SVG text with `getBoundingClientRect()` and inspect the densest state, not only the default state.
 - For dense rings or token maps, collect every label rectangle and check pairwise overlap after selecting the maximum-density option. Increase mobile SVG text and marker geometry together so readable labels still fit their nodes.
+- Do not center SVG letters with a guessed `y + n` offset. Use `dominant-baseline="central"` or an equivalent baseline rule, then measure the text and circle rectangles. The center delta should be near zero, and top/bottom insets should be non-negative and approximately equal. If the text is taller than the circle interior, increase the circle, reduce the text, or both before tuning the baseline.
 
 Document-level overflow checks are insufficient when an ancestor uses `overflow: hidden` or `overflow: clip`; clipped controls can coexist with `documentElement.scrollWidth === clientWidth`.
 
